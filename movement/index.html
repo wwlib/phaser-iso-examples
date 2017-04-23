@@ -1,0 +1,83 @@
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Basic character movement - Phaser Isometric plug-in examples</title>
+    <link rel="shortcut icon" href="../cube.ico" />
+    <link rel="icon" type="image/png" href="../cube.png" />
+    <link href="http://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet" type="text/css" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.4.0/codemirror.min.css" rel="stylesheet" type="text/css" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.4.0/theme/mdn-like.css" rel="stylesheet" type="text/css" />
+    <link href="../css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-2968065-2']);
+    _gaq.push(['_trackPageview']);
+    (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    <h1 style="text-align: center; font-size: 250%"><img src="../cube.png" style="vertical-align: middle" /> <a href="http://phaser.io" target="_blank">Phaser</a> Isometric plug-in</h1>
+    <h2>Basic character movement - <a href="./#character">Back</a></h2>
+    <div class="left">
+        <div id="test"></div>
+    </div>
+    <div class="right">
+        <textarea id="code"></textarea>
+        <button id="update">Update</button>
+    </div>
+    <script src="../dist/phaser.2.6.2.min.js"></script>
+    <script src="../dist/jquery-2.0.3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.4.0/codemirror.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.4.0/mode/javascript/javascript.js"></script>
+    <script src="../dist/phaser-plugin-isometric.min.js"></script>
+    <script id="script">
+                var editor;
+        $(function() {
+            $.ajax({url: 'index.js', dataType: 'text'}).done(function(data) {
+                $("#code").val(data);
+
+                editor = CodeMirror.fromTextArea($("#code")[0], {
+                    mode: "text/javascript",
+                    lineNumbers: true,
+                    theme: 'mdn-like'
+                });
+
+                editor.on("focus", function() {
+                    game.input.disabled = true;
+                });
+
+                editor.on("blur", function() {
+                    game.input.disabled = false;
+                });
+
+                editor.on("change", function() {
+                    $("#update").addClass("active");
+                });
+
+                $("#update").on('click', function(e) {
+                    e.preventDefault();
+                    $("#update").removeClass("active");
+                    game.destroy();
+                    $("#test").empty();
+                    $("#script").remove();
+                    $("body").append(
+                        $('<script id="script" />').text(editor.getValue())
+                    );
+                    game.input.disabled = false;
+                });
+            });
+        });
+            </script>
+    <script src="index.js"></script>
+</body>
+</html>
